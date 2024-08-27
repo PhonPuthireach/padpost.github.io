@@ -13,6 +13,10 @@
 /*-----------------------------------*\
   #CUSTOM PROPERTY
 \*-----------------------------------*/
+@font-face {
+  font-family: "MemphisRiver";
+  src: url(Khmer S2 Regular.ttf) format("truetype");
+}
 
 :root {
 
