@@ -3,186 +3,294 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Valorant 1v1 Registration</title>
-
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
-
-  <!-- Firebase CDN (Use these for non-module HTML) -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-
+  <title>Professional Booking App</title>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
     body {
-      font-family: 'Montserrat', sans-serif;
-      background: url('angkorfox.png') no-repeat center center fixed;
-      background-size: cover;
-      height: 100vh;
+      font-family: 'Roboto', sans-serif;
+      background-color: #f4f7fa;
+      color: #333;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      color: #fff;
+      height: 100vh;
+      overflow: hidden;
     }
 
-    .form-container {
-      background: rgba(0, 0, 0, 0.8);
-      padding: 30px;
-      border-radius: 15px;
-      width: 90%;
-      max-width: 400px;
-      text-align: center;
-      box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.5);
-      animation: fadeIn 1.5s ease;
+    .container {
+      width: 100%;
+      max-width: 500px;
+      background: #ffffff;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 20px;
+      padding-bottom: 70px;
     }
 
     h2 {
-      margin-bottom: 20px;
-      font-size: 1.8em;
+      font-size: 1.5rem;
       font-weight: 600;
-      color: #03DAC5;
+      color: #333;
+      padding: 20px;
+      text-align: center;
+      background: #007bff;
+      color: #ffffff;
     }
 
-    .form-group {
-      margin-bottom: 15px;
-      text-align: left;
+    .booking-list {
+      padding: 20px;
+      max-height: 400px;
+      overflow-y: auto;
     }
 
-    .form-group label {
-      display: block;
-      margin-bottom: 5px;
+    .booking-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px;
+      background-color: #f8f9fc;
+      border: 1px solid #e1e4e8;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      transition: background-color 0.2s;
+    }
+
+    .booking-info {
+      flex: 1;
+      color: #333;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .status {
+      font-size: 0.9rem;
       font-weight: bold;
-      color: #fff;
+      margin-top: 5px;
     }
 
-    .form-group input {
-      width: 100%;
-      padding: 10px;
+    .status.pending {
+      color: #ffc107;
+    }
+
+    .status.accepted {
+      color: #28a745;
+    }
+
+    .status.rejected {
+      color: #dc3545;
+    }
+
+    .booking-actions {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .location-input {
+      border: 1px solid #ced4da;
+      padding: 8px;
+      border-radius: 5px;
+      font-size: 0.9rem;
+      margin-right: 10px;
+      width: 120px;
+    }
+
+    .button {
+      padding: 6px 10px;
       border: none;
       border-radius: 5px;
-      font-size: 1em;
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-      transition: background 0.3s ease;
-    }
-
-    .form-group input:focus {
-      outline: none;
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    .submit-btn {
-      background-color: #03DAC5;
-      color: #000;
-      padding: 12px;
-      border: none;
-      width: 100%;
-      font-size: 1.2em;
-      border-radius: 5px;
+      font-weight: 600;
       cursor: pointer;
-      transition: background 0.3s ease;
+      font-size: 0.8rem;
+      color: #fff;
+      transition: background-color 0.2s;
     }
 
-    .submit-btn:hover {
-      background-color: #018786;
+    .button.accept-btn {
+      background-color: #28a745;
     }
 
-    /* Fade In Animation */
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    .button.reject-btn {
+      background-color: #dc3545;
     }
 
-    /* Responsive design */
-    @media (max-width: 600px) {
-      .form-container {
-        width: 90%;
-        padding: 20px;
-      }
+    .button.book-btn {
+      background-color: #007bff;
+    }
 
-      h2 {
-        font-size: 1.5em;
-      }
+    .action-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: #e9ecef;
+      display: flex;
+      justify-content: center;
+      padding: 10px 0;
+    }
 
-      .submit-btn {
-        font-size: 1em;
-      }
+    .action-container button {
+      width: 100px;
+      padding: 10px;
+      margin: 0 10px;
+      border: none;
+      border-radius: 25px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .open-btn {
+      background-color: #007bff;
+    }
+
+    .close-btn {
+      background-color: #6c757d;
     }
   </style>
 </head>
 <body>
 
-  <div class="form-container">
-    <h2>Valorant 1v1 Registration</h2>
-    <form id="tournamentForm">
-      <div class="form-group">
-        <label for="gameName">Game Name</label>
-        <input type="text" id="gameName" placeholder="Enter your game name" required>
-      </div>
-      <div class="form-group">
-        <label for="facebook">Facebook Profile</label>
-        <input type="text" id="facebook" placeholder="Enter Facebook profile link">
-      </div>
-      <div class="form-group">
-        <label for="discord">Discord Name</label>
-        <input type="text" id="discord" placeholder="Enter Discord name" required>
-      </div>
-      <button type="submit" class="submit-btn">Register</button>
-    </form>
-  </div>
+<div class="container">
+  <h2>Booking System</h2>
+  <div class="booking-list" id="bookingList"></div>
+</div>
 
-  <script>
-    // Firebase configuration (replace with your own Firebase project details)
-    const firebaseConfig = {
-        apiKey: "AIzaSyD4AK3f8g0BtOd_o5YKLt10uDkPYtfzI4o",
-  authDomain: "webapp-22fb1.firebaseapp.com",
-  databaseURL: "https://webapp-22fb1-default-rtdb.firebaseio.com",
-  projectId: "webapp-22fb1",
-  storageBucket: "webapp-22fb1.appspot.com",
-  messagingSenderId: "745591170613",
-  appId: "1:745591170613:web:67a74be5aa2ba931acb37c",
-  measurementId: "G-V87V301SPJ"
-    };
+<div class="action-container">
+  <button class="open-btn" onclick="openBooking()">Open Booking</button>
+  <button class="close-btn" onclick="closeBooking()">Close Booking</button>
+</div>
 
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+<script>
+  // Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBMqiBhh2GP661O0LvF3R8P2SQ-vFdvDRw",
+  authDomain: "online-game-9d4bf.firebaseapp.com",
+  databaseURL: "https://online-game-9d4bf-default-rtdb.firebaseio.com",
+  projectId: "online-game-9d4bf",
+  storageBucket: "online-game-9d4bf.firebasestorage.app",
+  messagingSenderId: "757460372786",
+  appId: "1:757460372786:web:9db6f3cb60209809705b2b",
+  measurementId: "G-PT9PBZF2S3"
+  };
 
-    // Form Submission Handler
-    document.getElementById('tournamentForm').addEventListener('submit', (e) => {
-      e.preventDefault();
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+  const currentUser = localStorage.getItem('username') || "User";
 
-      // Capture form data
-      const gameName = document.getElementById('gameName').value;
-      const facebook = document.getElementById('facebook').value;
-      const discord = document.getElementById('discord').value;
-
-      // Validate the form and send data to Firestore
-      if (gameName && discord) {
-        db.collection('registrations').add({
-          gameName: gameName,
-          facebook: facebook,
-          discord: discord,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp() // To store the time of submission
-        })
-        .then(() => {
-          alert('Registration successful!');
-          // Reset form after successful submission
-          document.getElementById('tournamentForm').reset();
-        })
-        .catch((error) => {
-          console.error('Error adding document: ', error);
-          alert('Error submitting the form. Please try again.');
-        });
+  function openBooking() {
+    const timestamp = Date.now();
+    db.ref('status').get().then(snapshot => {
+      const status = snapshot.val();
+      if (status && status.open) {
+        alert("A session is already open and will close in 12 hours.");
       } else {
-        alert('Please fill out all required fields.');
+        db.ref('status').set({ open: true, timestamp, openedBy: currentUser });
+        loadBookings();
       }
     });
-  </script>
+  }
+
+  function closeBooking() {
+    db.ref('status').get().then(snapshot => {
+      const status = snapshot.val();
+      if (status && status.openedBy === currentUser) {
+        db.ref('status').set({ open: false }).then(() => {
+          db.ref('bookings').remove().then(() => {
+            alert("Session closed and all bookings unbooked.");
+            loadBookings();
+          });
+        });
+      } else {
+        alert("Only the session opener can close this booking session.");
+      }
+    });
+  }
+
+  function loadBookings() {
+    db.ref('status').get().then(snapshot => {
+      const status = snapshot.val();
+      const isOpen = status ? status.open : false;
+
+      db.ref('bookings').get().then(snapshot => {
+        const bookings = snapshot.val() || {};
+        const bookingList = document.getElementById('bookingList');
+        bookingList.innerHTML = '';
+
+        for (const key in bookings) {
+          const booking = bookings[key];
+          addBookingBox(booking.name, booking.bookedBy, booking.location, booking.status, isOpen);
+        }
+
+        if (isOpen && !bookings[currentUser]) {
+          addBookingBox(currentUser, null, null, "pending", isOpen);
+        }
+      });
+    });
+  }
+
+  function addBookingBox(name, bookedBy, location, status, isOpen) {
+    const box = document.createElement('div');
+    box.classList.add('booking-box');
+
+    const info = document.createElement('div');
+    info.classList.add('booking-info');
+    info.textContent = `${name} ${location ? `(Location: ${location})` : ""}`;
+
+    const statusLabel = document.createElement('div');
+    statusLabel.classList.add('status', status);
+    statusLabel.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+
+    const actions = document.createElement('div');
+    actions.classList.add('booking-actions');
+
+    if (isOpen && !bookedBy) {
+      const locationInput = document.createElement('input');
+      locationInput.classList.add('location-input');
+      locationInput.placeholder = "Enter location";
+
+      const bookBtn = document.createElement('button');
+      bookBtn.classList.add('button', 'book-btn');
+      bookBtn.textContent = 'Book';
+      bookBtn.onclick = () => {
+        const loc = locationInput.value;
+        if (loc) {
+          bookSlot(name, loc);
+        } else {
+          alert("Please enter a location to book.");
+        }
+      };
+
+      actions.append(locationInput, bookBtn);
+    } else if (status === "pending" && currentUser === status.openedBy) {
+      const acceptBtn = document.createElement('button');
+      acceptBtn.classList.add('button', 'accept-btn');
+      acceptBtn.textContent = '✔';
+      acceptBtn.onclick = () => updateBookingStatus(name, "accepted");
+
+      const rejectBtn = document.createElement('button');
+      rejectBtn.classList.add('button', 'reject-btn');
+      rejectBtn.textContent = '✖';
+      rejectBtn.onclick = () => updateBookingStatus(name, "rejected");
+
+      actions.append(acceptBtn, rejectBtn);
+    }
+
+    box.append(info, statusLabel, actions);
+    document.getElementById('bookingList').appendChild(box);
+  }
+
+  function bookSlot(name, location) {
+    db.ref('bookings/' + name).set({ name, bookedBy: currentUser, location, status: "pending" }).then(loadBookings);
+  }
+
+  function updateBookingStatus(name, status) {
+    db.ref('bookings/' + name).update({ status }).then(loadBookings);
+  }
+
+  window.onload = loadBookings;
+</script>
+
 </body>
 </html>
