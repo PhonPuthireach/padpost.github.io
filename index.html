@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Telegram Bot Order Form</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Roboto', sans-serif;
             background-color: #fff;
             display: flex;
             justify-content: center;
@@ -44,7 +44,7 @@
 
         .input-group {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 15px;
             margin-bottom: 25px;
         }
@@ -56,17 +56,12 @@
             border-radius: 8px;
             transition: border-color 0.3s ease;
             width: 100%;
-            font-family: 'Roboto', sans-serif;
         }
 
         .input-group input:focus {
             border-color: #000;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
             outline: none;
-        }
-
-        .input-group input#telegram {
-            grid-column: span 2;
         }
 
         .button-group {
@@ -85,7 +80,6 @@
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
             width: 48%;
-            font-family: 'Roboto', sans-serif;
         }
 
         button:hover {
@@ -162,7 +156,12 @@
             background-color: #e04e47;
         }
 
+        /* Mobile responsiveness */
         @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
             .input-group {
                 grid-template-columns: 1fr;
             }
@@ -171,8 +170,36 @@
                 width: 100%;
             }
 
-            .container {
-                padding: 20px;
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .item-list {
+                padding: 10px;
+                max-height: 300px;
+            }
+
+            .item {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px 0;
+                margin-bottom: 15px;
+            }
+
+            .item span {
+                font-size: 0.9rem;
+                margin-right: 0;
+                padding-bottom: 5px;
+            }
+
+            .payment-option {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .payment-option label {
+                font-size: 0.9rem;
+                padding: 5px 0;
             }
         }
     </style>
@@ -306,7 +333,7 @@
             🎨 *Color:* ${item.color}
             📏 *Size:* ${item.size}
             ℹ️ *Other Info:* ${item.other}
-            ---------------------------------
+            ------------------------------
             `;
         });
 
