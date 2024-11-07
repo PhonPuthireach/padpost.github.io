@@ -1,295 +1,331 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Professional Booking App</title>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-  <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-      background-color: #f4f7fa;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Bot Order Form</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .container {
-      width: 100%;
-      max-width: 500px;
-      background: #ffffff;
-      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      overflow: hidden;
-      margin-top: 20px;
-      padding-bottom: 70px;
-    }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+            padding: 10px;
+        }
 
-    h2 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: #333;
-      padding: 20px;
-      text-align: center;
-      background: #007bff;
-      color: #ffffff;
-    }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin: 20px;
+            overflow: hidden;
+        }
 
-    .booking-list {
-      padding: 20px;
-      max-height: 400px;
-      overflow-y: auto;
-    }
+        h2 {
+            font-size: 2rem;
+            color: #222;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
 
-    .booking-box {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 15px;
-      background-color: #f8f9fc;
-      border: 1px solid #e1e4e8;
-      border-radius: 8px;
-      margin-bottom: 12px;
-      transition: background-color 0.2s;
-    }
+        .input-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
 
-    .booking-info {
-      flex: 1;
-      color: #333;
-      font-size: 1rem;
-      font-weight: 500;
-    }
+        .input-group input {
+            padding: 14px;
+            font-size: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            transition: border-color 0.3s ease;
+            width: 100%;
+            font-family: 'Roboto', sans-serif;
+        }
 
-    .status {
-      font-size: 0.9rem;
-      font-weight: bold;
-      margin-top: 5px;
-    }
+        .input-group input:focus {
+            border-color: #000;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            outline: none;
+        }
 
-    .status.pending {
-      color: #ffc107;
-    }
+        .input-group input#telegram {
+            grid-column: span 2;
+        }
 
-    .status.accepted {
-      color: #28a745;
-    }
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
 
-    .status.rejected {
-      color: #dc3545;
-    }
+        button {
+            padding: 16px;
+            font-size: 1.1rem;
+            color: #fff;
+            background-color: #000;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: 48%;
+            font-family: 'Roboto', sans-serif;
+        }
 
-    .booking-actions {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
+        button:hover {
+            background-color: #333;
+            transform: translateY(-2px);
+        }
 
-    .location-input {
-      border: 1px solid #ced4da;
-      padding: 8px;
-      border-radius: 5px;
-      font-size: 0.9rem;
-      margin-right: 10px;
-      width: 120px;
-    }
+        button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
 
-    .button {
-      padding: 6px 10px;
-      border: none;
-      border-radius: 5px;
-      font-weight: 600;
-      cursor: pointer;
-      font-size: 0.8rem;
-      color: #fff;
-      transition: background-color 0.2s;
-    }
+        .payment-option {
+            display: none;
+            justify-content: space-around;
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
 
-    .button.accept-btn {
-      background-color: #28a745;
-    }
+        .payment-option label {
+            font-size: 1rem;
+            color: #555;
+            display: flex;
+            align-items: center;
+        }
 
-    .button.reject-btn {
-      background-color: #dc3545;
-    }
+        .payment-option input {
+            margin-right: 8px;
+        }
 
-    .button.book-btn {
-      background-color: #007bff;
-    }
+        .item-list {
+            margin-top: 25px;
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            max-height: 220px;
+            overflow-y: auto;
+        }
 
-    .action-container {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background-color: #e9ecef;
-      display: flex;
-      justify-content: center;
-      padding: 10px 0;
-    }
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 10px;
+        }
 
-    .action-container button {
-      width: 100px;
-      padding: 10px;
-      margin: 0 10px;
-      border: none;
-      border-radius: 25px;
-      font-weight: 600;
-      color: #fff;
-    }
+        .item:last-child {
+            border-bottom: none;
+        }
 
-    .open-btn {
-      background-color: #007bff;
-    }
+        .item span {
+            font-size: 0.95rem;
+            color: #555;
+            flex: 1;
+            margin-right: 15px;
+        }
 
-    .close-btn {
-      background-color: #6c757d;
-    }
-  </style>
+        .item button {
+            background-color: #ff5e57;
+            color: #fff;
+            padding: 10px;
+            font-size: 0.9rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .item button:hover {
+            background-color: #e04e47;
+        }
+
+        @media (max-width: 600px) {
+            .input-group {
+                grid-template-columns: 1fr;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
 
 <div class="container">
-  <h2>Booking System</h2>
-  <div class="booking-list" id="bookingList"></div>
-</div>
-
-<div class="action-container">
-  <button class="open-btn" onclick="openBooking()">Open Booking</button>
-  <button class="close-btn" onclick="closeBooking()">Close Booking</button>
+    <h2>Order Submission Form</h2>
+    <div id="input-section" class="input-group">
+        <input type="text" id="telegram" placeholder="Telegram Username" required>
+        <input type="text" id="link" placeholder="Product Link">
+        <input type="text" id="color" placeholder="Color">
+        <input type="text" id="size" placeholder="Size">
+        <input type="text" id="other" placeholder="Other Info">
+    </div>
+    
+    <div class="button-group">
+        <button id="add-to-list-button" onclick="addItem()">Add to List</button>
+        <button id="submit-button" onclick="showPaymentOptions()" disabled>Submit All</button>
+    </div>
+    
+    <div class="item-list" id="item-list">
+        <!-- Dynamically added items will appear here -->
+    </div>
+    
+    <div class="payment-option" id="payment-options">
+        <label>
+            <input type="radio" name="payment" value="PAY តាមQR" id="pay-qr"> PAY តាមQR
+        </label>
+        <label>
+            <input type="radio" name="payment" value="អោយលុយក្រៅ" id="pay-offline"> អោយលុយក្រៅ
+        </label>
+        <button onclick="confirmAndSubmit()">Confirm Payment and Submit</button>
+    </div>
 </div>
 
 <script>
-  // Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyBMqiBhh2GP661O0LvF3R8P2SQ-vFdvDRw",
-  authDomain: "online-game-9d4bf.firebaseapp.com",
-  databaseURL: "https://online-game-9d4bf-default-rtdb.firebaseio.com",
-  projectId: "online-game-9d4bf",
-  storageBucket: "online-game-9d4bf.firebasestorage.app",
-  messagingSenderId: "757460372786",
-  appId: "1:757460372786:web:9db6f3cb60209809705b2b",
-  measurementId: "G-PT9PBZF2S3"
-  };
+    const telegram = document.getElementById('telegram');
+    const link = document.getElementById('link');
+    const color = document.getElementById('color');
+    const size = document.getElementById('size');
+    const other = document.getElementById('other');
+    const itemList = document.getElementById('item-list');
+    const submitButton = document.getElementById('submit-button');
+    const paymentOptionsDiv = document.getElementById('payment-options');
+    const inputSection = document.getElementById('input-section');
+    const addToListButton = document.getElementById('add-to-list-button');
+    
+    const items = [];
 
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
-  const currentUser = localStorage.getItem('username') || "User";
-
-  function openBooking() {
-    const timestamp = Date.now();
-    db.ref('status').get().then(snapshot => {
-      const status = snapshot.val();
-      if (status && status.open) {
-        alert("A session is already open and will close in 12 hours.");
-      } else {
-        db.ref('status').set({ open: true, timestamp, openedBy: currentUser });
-        loadBookings();
-      }
-    });
-  }
-
-  function closeBooking() {
-    db.ref('status').get().then(snapshot => {
-      const status = snapshot.val();
-      if (status && status.openedBy === currentUser) {
-        db.ref('status').set({ open: false }).then(() => {
-          db.ref('bookings').remove().then(() => {
-            alert("Session closed and all bookings unbooked.");
-            loadBookings();
-          });
-        });
-      } else {
-        alert("Only the session opener can close this booking session.");
-      }
-    });
-  }
-
-  function loadBookings() {
-    db.ref('status').get().then(snapshot => {
-      const status = snapshot.val();
-      const isOpen = status ? status.open : false;
-
-      db.ref('bookings').get().then(snapshot => {
-        const bookings = snapshot.val() || {};
-        const bookingList = document.getElementById('bookingList');
-        bookingList.innerHTML = '';
-
-        for (const key in bookings) {
-          const booking = bookings[key];
-          addBookingBox(booking.name, booking.bookedBy, booking.location, booking.status, isOpen);
+    function addItem() {
+        if (!telegram.value || !link.value || !color.value || !size.value || !other.value) {
+            alert("Please fill out all fields before adding to the list.");
+            return;
         }
 
-        if (isOpen && !bookings[currentUser]) {
-          addBookingBox(currentUser, null, null, "pending", isOpen);
-        }
-      });
-    });
-  }
+        const item = {
+            telegram: telegram.value,
+            link: link.value,
+            color: color.value,
+            size: size.value,
+            other: other.value,
+        };
 
-  function addBookingBox(name, bookedBy, location, status, isOpen) {
-    const box = document.createElement('div');
-    box.classList.add('booking-box');
+        items.push(item);
+        renderList();
 
-    const info = document.createElement('div');
-    info.classList.add('booking-info');
-    info.textContent = `${name} ${location ? `(Location: ${location})` : ""}`;
+        // Clear input fields after adding the item
+        link.value = '';
+        color.value = '';
+        size.value = '';
+        other.value = '';
 
-    const statusLabel = document.createElement('div');
-    statusLabel.classList.add('status', status);
-    statusLabel.textContent = status.charAt(0).toUpperCase() + status.slice(1);
-
-    const actions = document.createElement('div');
-    actions.classList.add('booking-actions');
-
-    if (isOpen && !bookedBy) {
-      const locationInput = document.createElement('input');
-      locationInput.classList.add('location-input');
-      locationInput.placeholder = "Enter location";
-
-      const bookBtn = document.createElement('button');
-      bookBtn.classList.add('button', 'book-btn');
-      bookBtn.textContent = 'Book';
-      bookBtn.onclick = () => {
-        const loc = locationInput.value;
-        if (loc) {
-          bookSlot(name, loc);
-        } else {
-          alert("Please enter a location to book.");
-        }
-      };
-
-      actions.append(locationInput, bookBtn);
-    } else if (status === "pending" && currentUser === status.openedBy) {
-      const acceptBtn = document.createElement('button');
-      acceptBtn.classList.add('button', 'accept-btn');
-      acceptBtn.textContent = '✔';
-      acceptBtn.onclick = () => updateBookingStatus(name, "accepted");
-
-      const rejectBtn = document.createElement('button');
-      rejectBtn.classList.add('button', 'reject-btn');
-      rejectBtn.textContent = '✖';
-      rejectBtn.onclick = () => updateBookingStatus(name, "rejected");
-
-      actions.append(acceptBtn, rejectBtn);
+        // Enable the Submit All button
+        submitButton.disabled = false;
     }
 
-    box.append(info, statusLabel, actions);
-    document.getElementById('bookingList').appendChild(box);
-  }
+    function renderList() {
+        itemList.innerHTML = ''; // Clear current list
+        items.forEach((item, index) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.classList.add('item');
 
-  function bookSlot(name, location) {
-    db.ref('bookings/' + name).set({ name, bookedBy: currentUser, location, status: "pending" }).then(loadBookings);
-  }
+            itemDiv.innerHTML = `
+                <span><strong>📝 Telegram:</strong> ${item.telegram} <br> 
+                <strong>🔗 Link:</strong> <a href="${item.link}" target="_blank">${item.link}</a> <br> 
+                <strong>🎨 Color:</strong> ${item.color} <br> 
+                <strong>📏 Size:</strong> ${item.size} <br> 
+                <strong>ℹ️ Other:</strong> ${item.other}</span>
+                <button onclick="removeItem(${index})">Remove</button>
+            `;
 
-  function updateBookingStatus(name, status) {
-    db.ref('bookings/' + name).update({ status }).then(loadBookings);
-  }
+            itemList.appendChild(itemDiv);
+        });
+    }
 
-  window.onload = loadBookings;
+    function removeItem(index) {
+        items.splice(index, 1); // Remove item from the list
+        renderList();
+
+        if (items.length === 0) {
+            submitButton.disabled = true; // Disable Submit All button if no items in the list
+        }
+    }
+
+    function showPaymentOptions() {
+        inputSection.style.display = 'none'; // Hide input section
+        itemList.style.display = 'none'; // Hide item list
+        addToListButton.style.display = 'none'; // Hide Add to List button
+        submitButton.style.display = 'none'; // Hide Submit All button
+        paymentOptionsDiv.style.display = 'flex'; // Show payment options
+    }
+
+    function confirmAndSubmit() {
+        const paymentMethod = document.querySelector('input[name="payment"]:checked');
+
+        if (!paymentMethod) {
+            alert("Please select a payment method.");
+            return;
+        }
+
+        // Generate Order ID
+        const orderId = Math.floor(Math.random() * 1000000);
+        let message = `*New Order* 🛍️\nOrder ID: *${orderId}*\nPayment Method: *${paymentMethod.value}* 🏦\n\n`;
+
+        items.forEach((item, index) => {
+            message += `
+            *Item ${index + 1}:*
+            📝 *Telegram:* ${item.telegram}
+            🔗 *Link:* [View Product](${item.link})
+            🎨 *Color:* ${item.color}
+            📏 *Size:* ${item.size}
+            ℹ️ *Other Info:* ${item.other}
+            ---------------------------------
+            `;
+        });
+
+        const botToken = "7813984729:AAHh6u8SG1gcubvMYVSUjzc5xNPqYPaGtoE";
+        const chatId = "-4560754572";
+        const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}&parse_mode=Markdown`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                alert("Order has been successfully submitted!");
+                items.length = 0;
+                renderList();
+                submitButton.disabled = true;
+                paymentOptionsDiv.style.display = 'none';
+                location.reload();
+            })
+            .catch(error => alert("Error submitting order"));
+    }
 </script>
 
 </body>
