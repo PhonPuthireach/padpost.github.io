@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Order to Telegram</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            resize: vertical;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            font-size: 1.1rem;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .message {
+            margin-top: 20px;
+            color: green;
+        }
+        .error {
+            margin-top: 20px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Send Order to Telegram</h2>
+    <!-- Auto-filled textarea for message input -->
+    <textarea id="message-input" rows="6">🛍️ Order ID: {Enter Order ID here}
+Item: {Enter Item here}
+Total: {Enter Total here}</textarea>
+    <input type="text" id="button-name" placeholder="Enter button name" />
+    <input type="text" id="button-link" placeholder="Enter button link" />
+    <button onclick="sendMessage()">Send</button>
+    <div id="response-message"></div>
+</div>
+
+<script>
+    // Replace with your Telegram bot token and chat ID
+    const botToken = "7813984729:AAHh6u8SG1gcubvMYVSUjzc5xNPqYPaGtoE";
+    const chatId = "-1002413252719";
+
+    async function sendMessage() {
+        const messageInput = document.getElementById('message-input').value.trim();
+        const buttonName = document.getElementById('button-name').value.trim();
+        const buttonLink = document.getElementById('button-link').value.trim();
+        const responseMessage = document.getElementById('response-message');
+
+        // Validate inputs
+        if (!messageInput || !buttonName || !buttonLink) {
+            responseMessage.innerHTML = '<p class="error">Please fill out all fields.</p>';
+            return;
+        }
+
+        // Prepare the message without showing the link directly
+        const message = `
+📢 *Order Details*:
+${messageInput}
+        `;
+
+        // Prepare the payload for Telegram with hidden link
+        const payload = {
+            chat_id: chatId,
+            text: message,
+            parse_mode: 'Markdown',
+            reply_markup: {
+                inline_keyboard: [[
+                    {
+                        text: buttonName,
+                        url: buttonLink
+                    }
+                ]]
+            }
+        };
+
+        // Send the message to Telegram
+        try {
+            const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+
+            if (result.ok) {
+                responseMessage.innerHTML = '<p class="message">Message sent successfully!</p>';
+                // Clear input fields after sending
+                document.getElementById('message-input').value = '';
+                document.getElementById('button-name').value = '';
+                document.getElementById('button-link').value = '';
+            } else {
+                responseMessage.innerHTML = '<p class="error">Failed to send message.</p>';
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            responseMessage.innerHTML = '<p class="error">Error sending message. Please try again.</p>';
+        }
+    }
+</script>
+
+</body>
+</html>
