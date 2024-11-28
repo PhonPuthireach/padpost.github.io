@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ទិញផលិតផល</title>
+  <link href="https://fonts.googleapis.com/css2?family=Khmer+S2&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+  <!-- Header Section -->
+  <header class="header">
+    <div class="logo">
+      <span>កុយរាជ</span> <!-- Online Shop -->
+    </div>
+    <button class="menu-toggle">☰</button>
+  </header>
+
+  <!-- Banner Section -->
+  <section class="banner">
+    <img src="./koyreachtopup.svg" alt="Promotion">
+    <div class="banner-text">
+    </div>
+  </section>
+
+  <!-- Game ID & Server ID Section -->
+  <section class="game-details">
+    <h2>សូមបញ្ចូល</h2> <!-- Game Details -->
+    <form class="game-id-form">
+      <label for="game-id">សូមបញ្ចូល ID GAME</label> <!-- Game ID -->
+      <input type="text" id="game-id" placeholder="បញ្ចូល ID" required> <!-- Enter Game ID -->
+      <label for="server-id">សូមបញ្ចូល SERVER ID</label> <!-- Server ID -->
+      <input type="text" id="server-id" placeholder="បញ្ចូល SERVER" required> <!-- Enter Server ID -->
+      <span id="error-message" style="color: red; display: none;">សូមបញ្ចូល ID OR SERVER ID</span> <!-- Please fill in all required information -->
+    </form>
+  </section>
+
+  <!-- Pricing Section -->
+  <section class="pricing">
+    <h2>តារាងTOPUP</h2> <!-- Product Prices -->
+
+    
+      <div class="products">
+        <div class="product" onclick="selectProduct('56 Diamonds', 1.00, 'https://youtu.be/47PXDVEo5sA?si=mHMCC6Cj_LTRJZi8')">
+          <h3>56 Diamonds</h3>
+          <p>$1.00</p>
+        </div> 
+
+        <div class="products">
+          <div class="product" onclick="selectProduct('weeklyPass', 1.35, 'https://youtu.be/47PXDVEo5sA?si=mHMCC6Cj_LTRJZi8')">
+            <h3>WeeklyPass</h3>
+            <p>$1.35</p>
+          </div>
+
+
+      <!-- You can add more products here if needed -->
+    </div>
+  </section>
+
+  <!-- Checkout Section -->
+
+  <!-- Checkout Button -->
+
+  <section class="checkout">
+    <div id="cart-item">ទំនិញ៖ </div> <!-- Item: -->
+    <div id="cart-total">តម្លៃសរុប៖ $0</div> <!-- Total Price: $0 -->
+    <button id="checkout-btn" class="btn" disabled onclick="initiateCheckout()">Checkout</button>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
