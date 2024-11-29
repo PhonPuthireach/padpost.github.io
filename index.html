@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ទិញផលិតផល</title>
+  <title>Checkout System</title>
   <link href="https://fonts.googleapis.com/css2?family=Khmer+S2&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css">
 </head>
@@ -19,53 +19,59 @@
 
   <!-- Banner Section -->
   <section class="banner">
-    <img src="bannerss.jpg" alt="Promotion">
-    <div class="banner-text">
-    </div>
+    <img src="./koyreachtopup.svg" alt="Promotion">
   </section>
 
   <!-- Game ID & Server ID Section -->
   <section class="game-details">
     <h2>សូមបញ្ចូល</h2> <!-- Game Details -->
     <form class="game-id-form">
-      <label for="game-id">សូមបញ្ចូល ID GAME</label> <!-- Game ID -->
-      <input type="text" id="game-id" placeholder="បញ្ចូល ID" required> <!-- Enter Game ID -->
-      <label for="server-id">សូមបញ្ចូល SERVER ID</label> <!-- Server ID -->
-      <input type="text" id="server-id" placeholder="បញ្ចូល SERVER" required> <!-- Enter Server ID -->
-      <span id="error-message" style="color: red; display: none;">សូមបញ្ចូល ID OR SERVER ID</span> <!-- Please fill in all required information -->
+      <label for="game-id">ID GAME</label>
+      <input type="text" id="game-id" placeholder="បញ្ចូល ID" required>
+      <label for="server-id">SERVER ID</label>
+      <input type="text" id="server-id" placeholder="បញ្ចូល SERVER" required>
+      <span id="error-message" style="color: red; display: none;">សូមបញ្ចូល ID OR SERVER ID</span>
     </form>
   </section>
 
   <!-- Pricing Section -->
   <section class="pricing">
-    <h2>តារាងTOPUP</h2> <!-- Product Prices -->
+    <h2>📆 WEEKLY PASS 📆</h2>
+    <div class="products">
+      <div class="product" onclick="selectProduct('weeklyPass', 1.30, 'https://link.payway.com.kh/ABAPAYtq311070Y')">
+        <h3>WeeklyPass</h3>
+        <p>$1.30</p>
+      </div>
+      <div class="product" onclick="selectProduct('WeeklyPass x2', 2.60, 'https://link.payway.com.kh/ABAPAY9M311073C')">
+        <h3>WeeklyPass x2</h3>
+        <p>$2.60</p>
+      </div>
+    </div>
+  </section>
 
-    
-      <div class="products">
-        <div class="product" onclick="selectProduct('56 Diamonds', 1.00, 'https://youtu.be/47PXDVEo5sA?si=mHMCC6Cj_LTRJZi8')">
-          <h3>56 Diamonds</h3>
-          <p>$1.00</p>
-        </div> 
-
-        <div class="products">
-          <div class="product" onclick="selectProduct('weeklyPass', 1.35, 'https://youtu.be/47PXDVEo5sA?si=mHMCC6Cj_LTRJZi8')">
-            <h3>WeeklyPass</h3>
-            <p>$1.35</p>
-          </div>
-
-
-      <!-- You can add more products here if needed -->
+  <section class="pricing">
+    <h2>💎 Diamonds 💎</h2>
+    <div class="products">
+      <div class="product" onclick="selectProduct('86 Diamonds', 1.20, 'https://link.payway.com.kh/ABAPAYj8311075N')">
+        <h3>86 Diamonds</h3>
+        <p>$1.20</p>
+      </div>
+      <div class="product" onclick="selectProduct('WeeklyPass x2', 1.80, 'https://link.payway.com.kh/ABAPAY8n3110762')">
+        <h3>112 Diamonds</h3>
+        <p>$1.80</p>
+      </div>
     </div>
   </section>
 
   <!-- Checkout Section -->
-
-  <!-- Checkout Button -->
-
   <section class="checkout">
-    <div id="cart-item">ទំនិញ៖ </div> <!-- Item: -->
-    <div id="cart-total">តម្លៃសរុប៖ $0</div> <!-- Total Price: $0 -->
-    <button id="checkout-btn" class="btn" disabled onclick="initiateCheckout()">Checkout</button>
+    <div id="cart-item">ទំនិញ៖ </div>
+    <div id="cart-total">តម្លៃសរុប៖ $0</div>
+    <button id="checkout-btn" class="btn" disabled onclick="openProductLink()">Checkout</button>
+    <div id="countdown"></div>
+    <div id="link-btn-container" style="display:none;">
+      <button id="link-btn" class="btn" onclick="openProductLink()">Open Product Link</button>
+    </div>
   </section>
 
   <script src="script.js"></script>
