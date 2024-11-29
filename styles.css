@@ -1,5 +1,5 @@
 /* Global Settings */
-@import url('https://fonts.googleapis.com/css2?family=Khmer+S2&display=swap'); /* Khmer S2 font */
+@import url('https://fonts.googleapis.com/css2?family=Khmer+S2&display=swap');
 
 body {
   font-family: 'Khmer S2', sans-serif;
@@ -22,16 +22,6 @@ body {
 }
 
 .header .logo {
-  display: flex;
-  align-items: center;
-}
-
-.header .logo img {
-  height: 40px;
-  margin-right: 10px;
-}
-
-.header .logo span {
   font-size: 1.5rem;
   font-weight: 700;
 }
@@ -49,25 +39,6 @@ body {
   opacity: 0.95;
 }
 
-.banner-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #fff;
-  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
-}
-
-.banner-text h1 {
-  font-size: 2.5rem;
-  font-weight: 600;
-}
-
-.banner-text .subtext {
-  font-size: 1.2rem;
-  margin-top: 10px;
-}
-
 /* Game Details Section */
 .game-details {
   padding: 30px;
@@ -82,15 +53,9 @@ body {
   text-align: center;
 }
 
-.game-id-form {
-  max-width: 400px;
-  margin: 0 auto;
-}
-
 .game-id-form label {
   display: block;
   margin: 10px 0;
-  font-weight: 500;
 }
 
 .game-id-form input {
@@ -105,7 +70,7 @@ body {
   border-color: #2575fc;
 }
 
-.game-id-form .error {
+.error {
   color: red;
   font-size: 0.85rem;
   display: none;
@@ -130,10 +95,10 @@ body {
 }
 
 .product {
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 20px;
+  background: #ffffff;
+  border: 1px solid #5c7aff;
+  border-radius: 10px;
+  padding: 1px;
   text-align: center;
   width: 200px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -151,21 +116,10 @@ body {
 
 .product p {
   margin: 0;
-  color: #4d5561;
-}
-
-.discount {
-  color: #e74c3c;
-  font-size: 0.9rem;
+  color: #ff3e3e;
 }
 
 /* Button Styling */
-.button-group {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
 .btn {
   padding: 12px 30px;
   border: none;
@@ -176,71 +130,13 @@ body {
   transition: transform 0.3s ease-in-out, background 0.3s;
 }
 
-.add-to-cart {
-  background: #2575fc;
-  color: white;
-}
-
-.checkout-btn {
-  background: linear-gradient(90deg, #6a11cb, #4d5561);
-  color: white;
-}
-
 .btn:hover {
   transform: translateY(-4px);
 }
 
-.add-to-cart:hover {
-  background: #1c62d3;
-}
-
-.checkout-btn:hover {
-  background: linear-gradient(90deg, #4d5561, #6a11cb);
-}
-
-.add-to-cart:disabled, .checkout-btn:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
-/* Checkout Section */
 .checkout {
   background: linear-gradient(90deg, #4d5561, #6a11cb);
   color: white;
   padding: 20px;
   text-align: center;
-}
-
-
-/* Existing CSS remains mostly unchanged, just ensure the following classes are included */
-
-/* Styling for the Checkout Section */
-.checkout {
-  background: linear-gradient(90deg, #4d5561, #6a11cb);
-  color: white;
-  padding: 20px;
-  text-align: center;
-}
-
-#error-message {
-  color: red;
-  font-size: 0.9rem;
-  display: none;
-}
-
-.product {
-  cursor: pointer;
-  background: #fff;
-  border-radius: 8px;
-  padding: 20px;
-  margin: 10px;
-  text-align: center;
-  width: 200px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease-in-out;
-}
-
-.product:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }
