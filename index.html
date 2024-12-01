@@ -14,33 +14,44 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f5f5f5;
+            background-color: #101136;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 20px;
         }
 
+        /* Banner Style */
+        .banner {
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 20px;
+            height: auto;
+        }
+
+        /* Small and Polished Input Form */
         .input-id {
             background: #ffffff;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            max-width: 400px;
+            padding: 15px 20px;
+            max-width: 350px;  /* Reduced width */
             width: 100%;
             margin-bottom: 20px;
+            font-size: 14px;
         }
 
         .input-id h3 {
-            font-size: 18px;
-            margin-bottom: 20px;
+            font-size: 16px;
+            margin-bottom: 15px;
             color: #333;
+            text-align: center;
         }
 
         .MuiFormControl-root {
             display: flex;
             flex-direction: column;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .MuiInputBase-root {
@@ -63,14 +74,17 @@
             border-color: #007bff;
         }
 
-        .result {
+        /* Result section to match the input size */
+        #result {
             font-size: 14px;
             color: #333;
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ddd;
+            margin-top: 10px;
+            padding: 8px;
+            border: 1px solid #ccc;
             border-radius: 4px;
             background: #f7f7f7;
+            text-align: center;
+            width: 100%;
         }
 
         .error {
@@ -95,10 +109,12 @@
             display: flex;
             flex-wrap: wrap;
             gap: 15px;
+            justify-content: center;
         }
 
+        /* Make the buttons/products next to each other on mobile */
         .product {
-            flex: 1 1 calc(50% - 15px);
+            flex: 1 1 calc(50% - 15px); /* Default for larger screens (two in a row) */
             padding: 15px;
             border: 2px solid #ddd;
             border-radius: 8px;
@@ -149,9 +165,74 @@
             background: #ccc;
             cursor: not-allowed;
         }
+
+        /* Mobile Responsiveness */
+        @media only screen and (max-width: 768px) {
+            /* Make the banner image full width and scale correctly */
+            .banner {
+                width: 100%;
+                height: auto;
+            }
+
+            /* Adjust the input form to be full width */
+            .input-id {
+                width: 90%;
+                max-width: 100%;
+            }
+
+            .input-id h3 {
+                font-size: 16px;
+            }
+
+            .MuiInputBase-root input {
+                font-size: 16px;
+                padding: 1px;
+            }
+
+            #result {
+                font-size: 16px;
+                padding: 10px;
+            }
+
+            .pricing {
+                width: 90%;
+                max-width: 100%;
+            }
+
+            /* Make the buttons side by side on small screens */
+            .products {
+                display: flex;
+                justify-content: space-between;
+                gap: 10px;
+            }
+
+            .product {
+                flex: 1 1 48%;  /* Adjust buttons to be next to each other on mobile */
+                padding: 15px;
+                font-size: 14px;
+            }
+
+            .checkout {
+                width: 90%;
+                max-width: 100%;
+            }
+
+            .checkout-details p {
+                font-size: 16px;
+            }
+
+            .checkout button {
+                font-size: 18px;
+                padding: 12px;
+            }
+        }
+
     </style>
 </head>
 <body>
+
+    <!-- Banner Section -->
+    <img class="banner" src="aa.png" alt="Mobile Legends Banner">
 
     <div class="input-id">
         <h3>Enter your game ID</h3>
@@ -169,7 +250,7 @@
                 </div>
             </div>
         </div>
-        <div id="result" class="result"></div>
+        <div id="result"></div>
     </div>
 
     <section class="pricing">
@@ -205,11 +286,7 @@
             const resultDiv = document.getElementById("result");
 
             resultDiv.innerHTML = '';
-            if (!userId || !serverId) {
-                resultDiv.innerHTML = '<span class="error"><strong>Both Game ID and Server ID are required.</strong></span>';
-                isIDValid = false;
-                toggleCheckoutButton();
-            } else {
+            if (userId && serverId) {
                 resultDiv.innerHTML = `<span>Loading...</span>`;
                 checkID(userId, serverId);
             }
@@ -218,7 +295,6 @@
         function checkID(userId, serverId) {
             const url = `https://id-game-checker.p.rapidapi.com/mobile-legends/${userId}/${serverId}`;
             const xhr = new XMLHttpRequest();
-            xhr.withCredentials = true;
 
             xhr.onreadystatechange = function () {
                 const resultDiv = document.getElementById("result");
@@ -230,12 +306,12 @@
                             isIDValid = true;
                             toggleCheckoutButton();
                         } else {
-                            resultDiv.innerHTML = `<span class="error"><strong>Game ID or Server ID not found.</strong></span>`;
+                            resultDiv.innerHTML = `<span class="error"><strong>Don't see</strong></span>`;
                             isIDValid = false;
                             toggleCheckoutButton();
                         }
                     } else {
-                        resultDiv.innerHTML = `<span class="error"><strong>Game ID or Server ID not found.</strong></span>`;
+                        resultDiv.innerHTML = `<span class="error"><strong>Don't see</strong></span>`;
                         isIDValid = false;
                         toggleCheckoutButton();
                     }
@@ -264,42 +340,10 @@
         }
 
         function proceedToCheckout() {
-            if (isIDValid && selectedProduct) {
-                window.open(selectedProduct.link, '_blank');
-
-                const message = `Checkout initiated for:\nItem: ${selectedProduct.name}\nPrice: $${selectedProduct.price.toFixed(2)}\nUser ID: ${document.getElementById("game-id").value}\nServer ID: ${document.getElementById("server-id").value}`;
-                sendTelegramMessage(message);
-
-                const button = document.getElementById('checkout-button');
-                let countdown = 10;
-
-                button.textContent = `Refreshing in ${countdown}s...`;
-                button.disabled = true;
-
-                const interval = setInterval(() => {
-                    countdown--;
-                    button.textContent = `Refreshing in ${countdown}s...`;
-
-                    if (countdown === 0) {
-                        clearInterval(interval);
-                        location.reload();
-                    }
-                }, 1000);
-            } else {
-                alert('Please ensure your ID is valid and a product is selected.');
+            if (selectedProduct) {
+                window.location.href = selectedProduct.link;
             }
         }
-
-        function sendTelegramMessage(message) {
-            const token = '7813984729:AAHh6u8SG1gcubvMYVSUjzc5xNPqYPaGtoE';
-            const chatId = '7834968819';
-            const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
-
-            fetch(url)
-                .then(response => response.json())
-                .catch(error => console.error('Error sending message:', error));
-        }
     </script>
-
 </body>
 </html>
