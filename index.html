@@ -1,79 +1,305 @@
 <!DOCTYPE html>
-<html lang="km">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout System</title>
-  <link href="https://fonts.googleapis.com/css2?family=Khmer+S2&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Legends ID Checker & Checkout</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .input-id {
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .input-id h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .MuiFormControl-root {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 16px;
+        }
+
+        .MuiInputBase-root {
+            position: relative;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .MuiInputBase-root input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .MuiInputBase-root input:focus {
+            border-color: #007bff;
+        }
+
+        .result {
+            font-size: 14px;
+            color: #333;
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #f7f7f7;
+        }
+
+        .error {
+            color: #ff4c4c;
+        }
+
+        .success {
+            color: #4caf50;
+        }
+
+        .pricing {
+            width: 100%;
+            max-width: 600px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .products {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .product {
+            flex: 1 1 calc(50% - 15px);
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .product.selected {
+            border-color: #007bff;
+            background: #e6f7ff;
+        }
+
+        .checkout {
+            width: 100%;
+            max-width: 600px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .checkout h3 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .checkout-details p {
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .checkout button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: #fff;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .checkout button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
-
 <body>
-  <!-- Header Section -->
-  <header class="header">
-    <div class="logo">
-      <span>កុយរាជ</span> <!-- Online Shop -->
+
+    <div class="input-id">
+        <h3>Enter your game ID</h3>
+        <div>
+            <div class="MuiFormControl-root">
+                <label class="MuiFormLabel-root" for="game-id">Game ID</label>
+                <div class="MuiInputBase-root">
+                    <input id="game-id" type="number" oninput="checkInputs()">
+                </div>
+            </div>
+            <div class="MuiFormControl-root">
+                <label class="MuiFormLabel-root" for="server-id">Server ID</label>
+                <div class="MuiInputBase-root">
+                    <input id="server-id" type="number" oninput="checkInputs()">
+                </div>
+            </div>
+        </div>
+        <div id="result" class="result"></div>
     </div>
-    <button class="menu-toggle">☰</button>
-  </header>
 
-  <!-- Banner Section -->
-  <section class="banner">
-    <img src="bannerss.jpg" alt="Promotion">
-  </section>
+    <section class="pricing">
+        <h3>💎 Diamonds 💎</h3>
+        <div class="products">
+            <div class="product" onclick="selectProduct('86 Diamonds', 1.20, 'https://link.payway.com.kh/ABAPAYj8311075N')">
+                <h3>86 Diamonds</h3>
+                <p>$1.20</p>
+            </div>
+            <div class="product" onclick="selectProduct('112 Diamonds', 1.80, 'https://link.payway.com.kh/ABAPAY8n3110762')">
+                <h3>112 Diamonds</h3>
+                <p>$1.80</p>
+            </div>
+        </div>
+    </section>
 
-  <!-- Game ID & Server ID Section -->
-  <section class="game-details">
-    <h2>សូមបញ្ចូល</h2> <!-- Game Details -->
-    <form class="game-id-form">
-      <label for="game-id">ID GAME</label>
-      <input type="text" id="game-id" placeholder="បញ្ចូល ID" required>
-      <label for="server-id">SERVER ID</label>
-      <input type="text" id="server-id" placeholder="បញ្ចូល SERVER" required>
-      <span id="error-message" style="color: red; display: none;">សូមបញ្ចូល ID OR SERVER ID</span>
-    </form>
-  </section>
+    <section class="checkout">
+        <h3>Checkout</h3>
+        <div class="checkout-details">
+            <p>Item: <span id="checkout-item">None</span></p>
+            <p>Total: <span id="checkout-total">$0.00</span></p>
+        </div>
+        <button id="checkout-button" onclick="proceedToCheckout()" disabled>Checkout</button>
+    </section>
 
-  <!-- Pricing Section -->
-  <section class="pricing">
-    <h2>📆 WEEKLY PASS 📆</h2>
-    <div class="products">
-      <div class="product" onclick="selectProduct('weeklyPass', 1.30, 'https://link.payway.com.kh/ABAPAYtq311070Y')">
-        <h3>WeeklyPass</h3>
-        <p>$1.30</p>
-      </div>
-      <div class="product" onclick="selectProduct('WeeklyPass x2', 2.60, 'https://link.payway.com.kh/ABAPAY9M311073C')">
-        <h3>WeeklyPass x2</h3>
-        <p>$2.60</p>
-      </div>
-    </div>
-  </section>
+    <script>
+        let selectedProduct = null;
+        let isIDValid = false;
 
-  <section class="pricing">
-    <h2>💎 Diamonds 💎</h2>
-    <div class="products">
-      <div class="product" onclick="selectProduct('86 Diamonds', 1.20, 'https://link.payway.com.kh/ABAPAYj8311075N')">
-        <h3>86 Diamonds</h3>
-        <p>$1.20</p>
-      </div>
-      <div class="product" onclick="selectProduct('WeeklyPass x2', 1.80, 'https://link.payway.com.kh/ABAPAY8n3110762')">
-        <h3>112 Diamonds</h3>
-        <p>$1.80</p>
-      </div>
-    </div>
-  </section>
+        function checkInputs() {
+            const userId = document.getElementById("game-id").value;
+            const serverId = document.getElementById("server-id").value;
+            const resultDiv = document.getElementById("result");
 
-  <!-- Checkout Section -->
-  <section class="checkout">
-    <div id="cart-item">ទំនិញ៖ </div>
-    <div id="cart-total">តម្លៃសរុប៖ $0</div>
-    <button id="checkout-btn" class="btn" disabled onclick="openProductLink()">Checkout</button>
-    <div id="countdown"></div>
-    <div id="link-btn-container" style="display:none;">
-      <button id="link-btn" class="btn" onclick="openProductLink()">Open Product Link</button>
-    </div>
-  </section>
+            resultDiv.innerHTML = '';
+            if (!userId || !serverId) {
+                resultDiv.innerHTML = '<span class="error"><strong>Both Game ID and Server ID are required.</strong></span>';
+                isIDValid = false;
+                toggleCheckoutButton();
+            } else {
+                resultDiv.innerHTML = `<span>Loading...</span>`;
+                checkID(userId, serverId);
+            }
+        }
 
-  <script src="script.js"></script>
+        function checkID(userId, serverId) {
+            const url = `https://id-game-checker.p.rapidapi.com/mobile-legends/${userId}/${serverId}`;
+            const xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.onreadystatechange = function () {
+                const resultDiv = document.getElementById("result");
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.error === false && response.data && response.data.username) {
+                            resultDiv.innerHTML = `<span class="success"><strong>${response.data.username}</strong></span>`;
+                            isIDValid = true;
+                            toggleCheckoutButton();
+                        } else {
+                            resultDiv.innerHTML = `<span class="error"><strong>Game ID or Server ID not found.</strong></span>`;
+                            isIDValid = false;
+                            toggleCheckoutButton();
+                        }
+                    } else {
+                        resultDiv.innerHTML = `<span class="error"><strong>Game ID or Server ID not found.</strong></span>`;
+                        isIDValid = false;
+                        toggleCheckoutButton();
+                    }
+                }
+            };
+
+            xhr.open('GET', url);
+            xhr.setRequestHeader('x-rapidapi-key', 'af5e84f6aemshcd85a345411c83dp1c0ccbjsn368c3580d19e');
+            xhr.setRequestHeader('x-rapidapi-host', 'id-game-checker.p.rapidapi.com');
+            xhr.send();
+        }
+
+        function selectProduct(name, price, link) {
+            document.querySelectorAll('.product').forEach(product => product.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+
+            selectedProduct = { name, price, link };
+            document.getElementById('checkout-item').textContent = name;
+            document.getElementById('checkout-total').textContent = `$${price.toFixed(2)}`;
+
+            toggleCheckoutButton();
+        }
+
+        function toggleCheckoutButton() {
+            document.getElementById('checkout-button').disabled = !(isIDValid && selectedProduct);
+        }
+
+        function proceedToCheckout() {
+            if (isIDValid && selectedProduct) {
+                window.open(selectedProduct.link, '_blank');
+
+                const message = `Checkout initiated for:\nItem: ${selectedProduct.name}\nPrice: $${selectedProduct.price.toFixed(2)}\nUser ID: ${document.getElementById("game-id").value}\nServer ID: ${document.getElementById("server-id").value}`;
+                sendTelegramMessage(message);
+
+                const button = document.getElementById('checkout-button');
+                let countdown = 10;
+
+                button.textContent = `Refreshing in ${countdown}s...`;
+                button.disabled = true;
+
+                const interval = setInterval(() => {
+                    countdown--;
+                    button.textContent = `Refreshing in ${countdown}s...`;
+
+                    if (countdown === 0) {
+                        clearInterval(interval);
+                        location.reload();
+                    }
+                }, 1000);
+            } else {
+                alert('Please ensure your ID is valid and a product is selected.');
+            }
+        }
+
+        function sendTelegramMessage(message) {
+            const token = '7813984729:AAHh6u8SG1gcubvMYVSUjzc5xNPqYPaGtoE';
+            const chatId = '7834968819';
+            const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .catch(error => console.error('Error sending message:', error));
+        }
+    </script>
+
 </body>
 </html>
